@@ -262,16 +262,9 @@ Run with: `cd contracts && cargo test --workspace` and `cd frontend && npm test`
 
 ## 🎥 Demo Video
 
-**Link**: [stellarforge-demo.mp4](stellarforge-demo.mp4) (2 minutes, 1.1 MB)
-
-*A 1-2 minute walkthrough covering:*
-- Connecting Freighter wallet
-- Minting an NFT through the wizard (upload → metadata → confirm)
-- Browsing the NFT gallery with IPFS images
-- Viewing the real-time activity feed
-- Mobile responsive navigation
-
-*Auto-generated using Puppeteer + ffmpeg. To re-record: `node scripts/record-demo.js && ffmpeg -y -f concat -safe 0 -i demo-screenshots/frames.txt -vf "fps=30,format=yuv420p" -c:v libx264 -preset fast -pix_fmt yuv420p -movflags +faststart stellarforge-demo.mp4`*
+> **Demo Video**: [Download stellarforge-demo.mp4](https://github.com/olaleyeolajide81-sketch/StellarForge/raw/main/stellarforge-demo.mp4) (2 minutes, 1.1 MB)
+>
+> *Auto-generated using Puppeteer + ffmpeg.*
 
 ---
 
