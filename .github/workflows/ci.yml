@@ -44,7 +44,7 @@ jobs:
 
       - name: Verify test count (3+ tests required)
         run: |
-          TEST_COUNT=$(cargo test --workspace -- --list 2>/dev/null | grep -c "^test ")
+          TEST_COUNT=$(cargo test --workspace -- --list 2>/dev/null | grep -c ": test$")
           echo "Found $TEST_COUNT tests"
           if [ "$TEST_COUNT" -lt 3 ]; then
             echo "❌ ERROR: At least 3 tests required, found $TEST_COUNT"
