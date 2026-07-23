@@ -270,25 +270,34 @@ Run with: `cd contracts && cargo test --workspace` and `cd frontend && npm test`
 
 ## Deployed Contract Addresses
 
-| Contract | Testnet Address | Deployment TX |
-|----------|----------------|---------------|
-| ForgeFactory | *(pending deployment)* | *(pending)* |
-| ForgeNFT (Genesis) | *(pending deployment)* | *(pending)* |
+| Contract | Testnet Address |
+|----------|----------------|
+| ForgeFactory | [`CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN`](https://stellar.expert/explorer/testnet/contract/CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN) |
+| ForgeNFT (Genesis) | [`CBPDGVMXFHXRKSAGMLNIM6BFQADKYECZNX62N7UMVU2UXGNWIW5LED24`](https://stellar.expert/explorer/testnet/contract/CBPDGVMXFHXRKSAGMLNIM6BFQADKYECZNX62N7UMVU2UXGNWIW5LED24) |
 
-*Run `./scripts/deploy.sh` to deploy contracts and populate these addresses. See the [Quickstart Guide](#quickstart-guide) for deployment instructions.*
+**WASM Hashes:**
+| Contract | WASM Hash |
+|----------|-----------|
+| ForgeNFT | `ebb2fb466e383405e1abbd71c4ae7b7dcd1d8227990bea431f243d1da6703935` |
+| ForgeFactory | `4effe81b77b96692c1480b9d50280f6d005000d5b433466fd6b9dc0df2ce9293` |
+
+**Deployer Account**: [`GD2RCOFFUY5RULSQ3EP4HQPLQR4A6DRPTQPFVG7HWQMEK3DH5DKY73K6`](https://stellar.expert/explorer/testnet/account/GD2RCOFFUY5RULSQ3EP4HQPLQR4A6DRPTQPFVG7HWQMEK3DH5DKY73K6)
+
+*Deploy your own instances: `STELLAR_SECRET_KEY=... STELLAR_PUBLIC_KEY=... ./scripts/deploy.sh`*
 
 ---
 
 ## 🔗 Transaction Hash for Contract Interaction
 
-**Latest Testnet Interaction**: *(pending deployment)*
+**Latest Testnet Interaction**:
 
-*After deploying and interacting with your contracts, record the transaction hash here. You can find it on [Stellar Expert](https://stellar.expert/explorer/testnet) by searching your contract address.*
+| Action | TX Hash | Explorer |
+|--------|---------|----------|
+| Factory Initialize | `85b2815a37d3dc30c7c99ce44388553dc8cf5d0a126d96b5a92ad047330a3d16` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/85b2815a37d3dc30c7c99ce44388553dc8cf5d0a126d96b5a92ad047330a3d16) |
+| Deploy NFT via Factory | *(cross-contract deploy_nft)* | [View Factory](https://stellar.expert/explorer/testnet/contract/CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN) |
+| Friendbot Fund | `729b3a854ec22a17cd5c3c35625f60d6b38c88f95a0896575e67a53a0d5a9e50` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/729b3a854ec22a17cd5c3c35625f60d6b38c88f95a0896575e67a53a0d5a9e50) |
 
-Example:
-```
-TX: abc123def456...  (Mint NFT via ForgeFactory → ForgeNFT cross-contract call)
-```
+*The `deploy_nft` invocation performs a cross-contract call (ForgeFactory → ForgeNFT). Visit the [Factory on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN) to see all related transactions.*
 
 ---
 
@@ -430,8 +439,8 @@ Run with: `cd frontend && npm test`
 | 2 | README with complete documentation | ✅ | Architecture diagrams, API reference, quickstart, test coverage |
 | 3 | 10+ meaningful commits | ✅ | 28 commits with descriptive messages |
 | 4 | Live demo link | ✅ Done | [stellarforge-demo.vercel.app](https://stellarforge-demo.vercel.app) |
-| 5 | Contract deployment address | 🔜 Pending | Run `./scripts/deploy.sh` — see [Deployed Contracts](#deployed-contract-addresses) |
-| 6 | Transaction hash for contract interaction | 🔜 Pending | See [Transaction Hash](#-transaction-hash-for-contract-interaction) section |
+| 5 | Contract deployment address | ✅ Done | ForgeFactory: `CCH6FVGY...CMCN`, ForgeNFT: `CBPDGVMX...LED24` — see [Deployed Contracts](#deployed-contract-addresses) |
+| 6 | Transaction hash for contract interaction | ✅ Done | `85b2815a...` (initialize), `729b3a85...` (fund) — see [Transaction Hash](#-transaction-hash-for-contract-interaction) |
 | 7 | Screenshots (mobile UI, CI/CD, tests) | ✅ Done | 5 screenshots embedded in [Screenshots](#-screenshots) section |
 | 8 | Demo video (1-2 minutes) | ✅ Done | [stellarforge-demo.mp4](https://github.com/olaleyeolajide81-sketch/StellarForge/raw/main/stellarforge-demo.mp4) (2 min) |
 

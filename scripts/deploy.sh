@@ -37,13 +37,18 @@ banner()      { echo -e "${CYAN}════════════════
 NETWORK="${STELLAR_NETWORK:-testnet}"
 RPC_URL="${STELLAR_RPC_URL:-https://soroban-testnet.stellar.org}"
 NETWORK_PASSPHRASE="${STELLAR_NETWORK_PASSPHRASE:-Test SDF Network ; September 2015}"
+export STELLAR_NETWORK_PASSPHRASE="$NETWORK_PASSPHRASE"
 
 # Source account secret key (required)
 : "${STELLAR_SECRET_KEY:?STELLAR_SECRET_KEY environment variable is required}"
 SECRET_KEY="$STELLAR_SECRET_KEY"
 
-# Derive public key
-PUBLIC_KEY=$(printf "%s" "$SECRET_KEY" | stellar keys show --global --network "$NETWORK" 2>/dev/null || echo "unknown")
+# Derive public key (accept env var override for environments where piping secret keys doesn't work)
+if [ -n "${STELLAR_PUBLIC_KEY:-}" ]; then
+    PUBLIC_KEY="$STELLAR_PUBLIC_KEY"
+else
+    PUBLIC_KEY=$(printf "%s" "$SECRET_KEY" | stellar keys show 2>/dev/null || echo "unknown")
+fi
 log_info "Deploying from account: $PUBLIC_KEY"
 
 # ─── WASM Paths ──────────────────────────────────────────────────────────────
@@ -63,10 +68,10 @@ log_info "Building ForgeFactory..."
 log_success "ForgeFactory built: $FORGE_FACTORY_WASM"
 
 # ─── Step 2: Install & Optimize WASM ────────────────────────────────────────
-banner "Step 2: Installing & Optimizing WASM"
+banner "Step 2: Uploading WASM"
 
-log_info "Installing ForgeNFT WASM..."
-FORGE_NFT_HASH=$(stellar contract install \
+log_info "Uploading ForgeNFT WASM..."
+FORGE_NFT_HASH=$(stellar contract upload \
     --wasm "$FORGE_NFT_WASM" \
     --source "$SECRET_KEY" \
     --network "$NETWORK" \
@@ -74,8 +79,8 @@ FORGE_NFT_HASH=$(stellar contract install \
     2>&1 | tail -1)
 log_success "ForgeNFT WASM hash: $FORGE_NFT_HASH"
 
-log_info "Installing ForgeFactory WASM..."
-FORGE_FACTORY_HASH=$(stellar contract install \
+log_info "Uploading ForgeFactory WASM..."
+FORGE_FACTORY_HASH=$(stellar contract upload \
     --wasm "$FORGE_FACTORY_WASM" \
     --source "$SECRET_KEY" \
     --network "$NETWORK" \
@@ -104,7 +109,7 @@ PLATFORM_FEE_STROOPS="${PLATFORM_FEE_STROOPS:-10000000}"
 # Fee token: the Stellar Asset Contract (SAC) address for native XLM
 # On testnet, this is derived from the native asset
 # The SAC address for XLM can be obtained via: stellar contract id asset --asset native --network testnet
-DEFAULT_SAC_ADDRESS="CB64D3G7SM2RTH6JSGG34HVJK7GMS6PYGJSC2KFYQJQMYGGSSM2PAFZT"
+DEFAULT_SAC_ADDRESS="CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
 FEE_TOKEN_ID="${FEE_TOKEN_ID:-$DEFAULT_SAC_ADDRESS}"
 
 log_info "Initializing ForgeFactory with fee: $PLATFORM_FEE_STROOPS stroops..."
