@@ -437,7 +437,7 @@ Run with: `cd frontend && npm test`
 |---|-------------|--------|----------|
 | 1 | Public GitHub repository | ✅ | [github.com/olaleyeolajide81-sketch/StellarForge](https://github.com/olaleyeolajide81-sketch/StellarForge) |
 | 2 | README with complete documentation | ✅ | Architecture diagrams, API reference, quickstart, test coverage |
-| 3 | 10+ meaningful commits | ✅ | 30 commits with descriptive messages |
+| 3 | 10+ meaningful commits | ✅ | 31 commits with descriptive messages |
 | 4 | Live demo link | ✅ Done | [stellarforge-demo.vercel.app](https://stellarforge-demo.vercel.app) |
 | 5 | Contract deployment address | ✅ Done | ForgeFactory: `CCH6FVGY...CMCN`, ForgeNFT: `CBPDGVMX...LED24` — see [Deployed Contracts](#deployed-contract-addresses) |
 | 6 | Transaction hash for contract interaction | ✅ Done | `85b2815a...` (initialize), `729b3a85...` (fund) — see [Transaction Hash](#-transaction-hash-for-contract-interaction) |
