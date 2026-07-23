@@ -1,5 +1,8 @@
 #![no_std]
 
+#[cfg(test)]
+mod test;
+
 use soroban_sdk::{
     contract, contractclient, contractimpl, contracttype, symbol_short, token, Address, BytesN, Env,
     Map, String, Symbol, Val,
@@ -28,12 +31,12 @@ pub struct NftContractInfo {
 
 #[contractclient(name = "ForgeNftClient")]
 pub trait ForgeNftTrait {
-    fn initialize(env: Env, admin: Address, name: String, symbol: String);
-    fn mint(env: Env, to: Address, uri: String) -> u32;
-    fn transfer(env: Env, from: Address, to: Address, token_id: u32);
-    fn get_metadata(env: Env, token_id: u32) -> Val;
-    fn balance_of(env: Env, owner: Address) -> u32;
-    fn total_supply(env: Env) -> u32;
+    fn initialize(admin: Address, name: String, symbol: String);
+    fn mint(to: Address, uri: String) -> u32;
+    fn transfer(from: Address, to: Address, token_id: u32);
+    fn get_metadata(token_id: u32) -> Val;
+    fn balance_of(owner: Address) -> u32;
+    fn total_supply() -> u32;
 }
 
 // ─── Main Contract ──────────────────────────────────────────────────────────

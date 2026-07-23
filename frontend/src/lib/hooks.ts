@@ -96,10 +96,10 @@ export function useContractEvents(
         if (!active) return;
 
         if (response.events && response.events.length > 0) {
-          const newEvents: ContractEvent[] = response.events.map((e) => ({
+          const newEvents: ContractEvent[] = response.events.map((e: any) => ({
             id: e.id,
             type: e.type,
-            contractId: e.contractId || contractId,
+            contractId: contractId!,
             topic: e.topic?.[0]?.toString() || "unknown",
             data: JSON.stringify(e.value),
             ledger: e.ledger,

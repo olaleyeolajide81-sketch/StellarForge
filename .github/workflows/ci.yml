@@ -26,7 +26,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
-          targets: wasm32-unknown-unknown
+          targets: wasm32v1-none
 
       - name: Cache Cargo registry & build
         uses: actions/cache@v4
@@ -65,7 +65,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
-          targets: wasm32-unknown-unknown
+          targets: wasm32v1-none
 
       - name: Cache Cargo registry & build
         uses: actions/cache@v4
@@ -79,24 +79,24 @@ jobs:
             ${{ runner.os }}-cargo-wasm-
 
       - name: Build ForgeNFT WASM
-        run: cargo build --package forge-nft --target wasm32-unknown-unknown --release
+        run: cargo build --package forge-nft --target wasm32v1-none --release
 
       - name: Build ForgeFactory WASM
-        run: cargo build --package forge-factory --target wasm32-unknown-unknown --release
+        run: cargo build --package forge-factory --target wasm32v1-none --release
 
       - name: Upload WASM artifacts
         uses: actions/upload-artifact@v4
         with:
           name: soroban-wasm
           path: |
-            contracts/target/wasm32-unknown-unknown/release/forge_nft.wasm
-            contracts/target/wasm32-unknown-unknown/release/forge_factory.wasm
+            contracts/target/wasm32v1-none/release/forge_nft.wasm
+            contracts/target/wasm32v1-none/release/forge_factory.wasm
           retention-days: 7
 
       - name: Verify WASM outputs
         run: |
           echo "Checking WASM artifacts..."
-          ls -lh target/wasm32-unknown-unknown/release/*.wasm
+          ls -lh target/wasm32v1-none/release/*.wasm
           echo "✅ WASM build complete"
 
   # ─── Frontend Build ────────────────────────────────────────────────────────

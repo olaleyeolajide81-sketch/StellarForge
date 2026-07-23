@@ -8,7 +8,7 @@
 # Requirements:
 #   - stellar-cli installed and in PATH
 #   - A funded Stellar testnet account (set via STELLAR_ACCOUNT env var or .env)
-#   - rust with wasm32-unknown-unknown target
+#   - rust with wasm32v1-none target (for soroban-sdk 27.x)
 
 set -euo pipefail
 
@@ -48,18 +48,18 @@ log_info "Deploying from account: $PUBLIC_KEY"
 
 # ─── WASM Paths ──────────────────────────────────────────────────────────────
 
-FORGE_NFT_WASM="$CONTRACTS_DIR/target/wasm32-unknown-unknown/release/forge_nft.wasm"
-FORGE_FACTORY_WASM="$CONTRACTS_DIR/target/wasm32-unknown-unknown/release/forge_factory.wasm"
+FORGE_NFT_WASM="$CONTRACTS_DIR/target/wasm32v1-none/release/forge_nft.wasm"
+FORGE_FACTORY_WASM="$CONTRACTS_DIR/target/wasm32v1-none/release/forge_factory.wasm"
 
 # ─── Step 1: Build Contracts ─────────────────────────────────────────────────
 banner "Step 1: Building WASM Contracts"
 
 log_info "Building ForgeNFT..."
-(cd "$CONTRACTS_DIR" && cargo build --package forge-nft --target wasm32-unknown-unknown --release)
+(cd "$CONTRACTS_DIR" && cargo build --package forge-nft --target wasm32v1-none --release)
 log_success "ForgeNFT built: $FORGE_NFT_WASM"
 
 log_info "Building ForgeFactory..."
-(cd "$CONTRACTS_DIR" && cargo build --package forge-factory --target wasm32-unknown-unknown --release)
+(cd "$CONTRACTS_DIR" && cargo build --package forge-factory --target wasm32v1-none --release)
 log_success "ForgeFactory built: $FORGE_FACTORY_WASM"
 
 # ─── Step 2: Install & Optimize WASM ────────────────────────────────────────

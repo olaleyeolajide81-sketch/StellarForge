@@ -41,9 +41,14 @@ export async function buildContractTx(
     throw new Error(`Simulation failed: ${simulated.error}`);
   }
 
+  const simData = simulated.transactionData as any;
+  const txXdr = simData.toXDR?.("base64") ?? simData.toXdr?.("base64");
+  if (!txXdr) {
+    throw new Error("Unable to serialize transaction XDR from simulation result");
+  }
   return {
-    xdr: simulated.transactionData.toXDR("base64"),
-    result: simulated.result!,
+    xdr: txXdr,
+    result: simulated.result as unknown as xdr.ScVal,
   };
 }
 

@@ -4,7 +4,6 @@ import {
   signTransaction,
   requestAccess,
 } from "@stellar/freighter-api";
-import type { NetworkDetails } from "@stellar/freighter-api";
 
 export interface WalletState {
   connected: boolean;
@@ -23,7 +22,7 @@ export async function checkWalletConnection(): Promise<WalletState> {
     }
 
     const publicKey = await getAddress();
-    const network: NetworkDetails = (await (
+    const network: { networkPassphrase: string } = (await (
       window as any
     ).stellar?.requestNetwork()) || { networkPassphrase: "" };
 
@@ -66,7 +65,7 @@ export async function signTransactionWithFreighter(
   const result = await signTransaction(xdr, {
     networkPassphrase,
     accountToSign: (await getAddress()).address,
-  });
+  } as any);
   return result.signedTxXdr;
 }
 
@@ -75,7 +74,7 @@ export async function signTransactionWithFreighter(
  */
 export async function getNetworkPassphrase(): Promise<string> {
   try {
-    const network: NetworkDetails = await (
+    const network: { networkPassphrase: string } = await (
       (window as any).stellar?.requestNetwork() || { networkPassphrase: "" }
     );
     return network.networkPassphrase;
