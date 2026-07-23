@@ -1,0 +1,169 @@
+name: StellarForge CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  NODE_VERSION: "20"
+  RUST_TOOLCHAIN: stable
+
+jobs:
+  # ─── Smart Contract Tests ──────────────────────────────────────────────────
+  test-contracts:
+    name: Test Soroban Contracts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./contracts
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Cargo registry & build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            contracts/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('contracts/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Run contract tests
+        run: cargo test --workspace -- --nocapture
+
+      - name: Verify test count (3+ tests required)
+        run: |
+          TEST_COUNT=$(cargo test --workspace -- --list 2>/dev/null | grep -c "^test ")
+          echo "Found $TEST_COUNT tests"
+          if [ "$TEST_COUNT" -lt 3 ]; then
+            echo "❌ ERROR: At least 3 tests required, found $TEST_COUNT"
+            exit 1
+          fi
+
+  # ─── Build WASM ────────────────────────────────────────────────────────────
+  build-wasm:
+    name: Build Optimized WASM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./contracts
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Cargo registry & build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            contracts/target
+          key: ${{ runner.os }}-cargo-wasm-${{ hashFiles('contracts/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-wasm-
+
+      - name: Build ForgeNFT WASM
+        run: cargo build --package forge-nft --target wasm32-unknown-unknown --release
+
+      - name: Build ForgeFactory WASM
+        run: cargo build --package forge-factory --target wasm32-unknown-unknown --release
+
+      - name: Upload WASM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: soroban-wasm
+          path: |
+            contracts/target/wasm32-unknown-unknown/release/forge_nft.wasm
+            contracts/target/wasm32-unknown-unknown/release/forge_factory.wasm
+          retention-days: 7
+
+      - name: Verify WASM outputs
+        run: |
+          echo "Checking WASM artifacts..."
+          ls -lh target/wasm32-unknown-unknown/release/*.wasm
+          echo "✅ WASM build complete"
+
+  # ─── Frontend Build ────────────────────────────────────────────────────────
+  build-frontend:
+    name: Build & Typecheck Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run frontend tests
+        run: npm test
+
+      - name: TypeScript typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          if [ -d ".next" ]; then
+            echo "✅ Frontend build successful"
+          else
+            echo "❌ Build output missing"
+            exit 1
+          fi
+
+  # ─── All Checks Passed ─────────────────────────────────────────────────────
+  ci-summary:
+    name: CI Summary
+    needs: [test-contracts, build-wasm, build-frontend]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          echo "==========================================="
+          echo "  StellarForge CI/CD Pipeline Summary"
+          echo "==========================================="
+          if [ "${{ needs.test-contracts.result }}" == "success" ]; then
+            echo "✅ Contract Tests: PASSED"
+          else
+            echo "❌ Contract Tests: FAILED"
+          fi
+          if [ "${{ needs.build-wasm.result }}" == "success" ]; then
+            echo "✅ WASM Build: PASSED"
+          else
+            echo "❌ WASM Build: FAILED"
+          fi
+          if [ "${{ needs.build-frontend.result }}" == "success" ]; then
+            echo "✅ Frontend Build: PASSED"
+          else
+            echo "❌ Frontend Build: FAILED"
+          fi
