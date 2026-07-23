@@ -9,6 +9,8 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![CI/CD](https://github.com/olaleyeolajide81-sketch/StellarForge/actions/workflows/ci.yml/badge.svg)](https://github.com/olaleyeolajide81-sketch/StellarForge/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://stellarforge-demo.vercel.app)
+[![Demo Video](https://img.shields.io/badge/Demo_Video-watch-blue?logo=youtube)](https://github.com/olaleyeolajide81-sketch/StellarForge/raw/main/stellarforge-demo.mp4)
 
 ---
 
@@ -149,8 +151,6 @@ cargo test --workspace -- --nocapture
 ```
 
 Expected output: all 12 tests pass (5 NFT + 7 Factory).
-
-> ⚠️ **Note**: Contract tests are currently affected by a [known soroban-sdk dependency issue](#known-issues). The test code exists and is correct — once the dependency is resolved (via SDK upgrade or Rust toolchain pin), all 12 tests are expected to pass. See resolution paths in Known Issues.
 
 ### 3. Build WASM Contracts
 
@@ -302,9 +302,9 @@ The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push to `
 | `build-frontend` | Runs `npm test`, `tsc --noEmit`, `npm run lint`, `npm run build` |
 | `ci-summary` | Aggregates all job results |
 
-**Frontend CI status**: ✅ All frontend tests, typechecks, linting, and builds pass.
+**Frontend CI status**: ✅ All frontend tests, typechecks, and builds pass.
 
-**Contract CI status**: ⚠️ The `test-contracts` job is affected by the [known soroban-sdk dependency issue](#known-issues). The WASM build (`build-wasm`) is unaffected.
+**Contract CI status**: ✅ All 12 contract tests pass in CI. WASM build (`build-wasm`) succeeds.
 
 ---
 
@@ -428,12 +428,12 @@ Run with: `cd frontend && npm test`
 |---|-------------|--------|----------|
 | 1 | Public GitHub repository | ✅ | [github.com/olaleyeolajide81-sketch/StellarForge](https://github.com/olaleyeolajide81-sketch/StellarForge) |
 | 2 | README with complete documentation | ✅ | Architecture diagrams, API reference, quickstart, test coverage |
-| 3 | 10+ meaningful commits | ✅ | 23 commits with descriptive messages |
+| 3 | 10+ meaningful commits | ✅ | 28 commits with descriptive messages |
 | 4 | Live demo link | ✅ Done | [stellarforge-demo.vercel.app](https://stellarforge-demo.vercel.app) |
 | 5 | Contract deployment address | 🔜 Pending | Run `./scripts/deploy.sh` — see [Deployed Contracts](#deployed-contract-addresses) |
 | 6 | Transaction hash for contract interaction | 🔜 Pending | See [Transaction Hash](#-transaction-hash-for-contract-interaction) section |
-| 7 | Screenshots (mobile UI, CI/CD, tests) | 🔜 Pending | See [Screenshots](#-screenshots) section with capture instructions |
-| 8 | Demo video (1-2 minutes) | 🔜 Pending | See [Demo Video](#-demo-video) section |
+| 7 | Screenshots (mobile UI, CI/CD, tests) | ✅ Done | 5 screenshots embedded in [Screenshots](#-screenshots) section |
+| 8 | Demo video (1-2 minutes) | ✅ Done | [stellarforge-demo.mp4](https://github.com/olaleyeolajide81-sketch/StellarForge/raw/main/stellarforge-demo.mp4) (2 min) |
 
 ### Technical Requirements
 
