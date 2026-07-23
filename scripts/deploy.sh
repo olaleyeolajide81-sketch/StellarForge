@@ -134,6 +134,19 @@ banner "Step 5: Deploying Initial ForgeNFT Instance"
 # Generate a deterministic salt (first deployment)
 INITIAL_SALT="0000000000000000000000000000000000000000000000000000000000000001"
 
+# Temporarily set fee to 0 so deploy_nft doesn't require prior token approval.
+# If you want to charge a fee, users must call approve() on the fee token contract first.
+log_info "Temporarily setting platform fee to 0 for initial deployment..."
+stellar contract invoke \
+    --id "$FORGE_FACTORY_ID" \
+    --source "$SECRET_KEY" \
+    --network "$NETWORK" \
+    --rpc-url "$RPC_URL" \
+    -- \
+    set_fee_amount \
+    --new_fee 0 \
+    2>&1 | tail -1
+
 log_info "Deploying ForgeNFT via factory with salt: $INITIAL_SALT..."
 FORGE_NFT_ID=$(stellar contract invoke \
     --id "$FORGE_FACTORY_ID" \
@@ -147,8 +160,19 @@ FORGE_NFT_ID=$(stellar contract invoke \
     --name "StellarForge Genesis" \
     --symbol "SFG" \
     2>&1 | tail -1)
-
 log_success "Initial ForgeNFT deployed at: $FORGE_NFT_ID"
+
+# Restore the platform fee
+log_info "Restoring platform fee to $PLATFORM_FEE_STROOPS stroops..."
+stellar contract invoke \
+    --id "$FORGE_FACTORY_ID" \
+    --source "$SECRET_KEY" \
+    --network "$NETWORK" \
+    --rpc-url "$RPC_URL" \
+    -- \
+    set_fee_amount \
+    --new_fee "$PLATFORM_FEE_STROOPS" \
+    2>&1 | tail -1
 
 # ─── Step 6: Update Frontend Environment ────────────────────────────────────
 banner "Step 6: Updating Frontend Configuration"

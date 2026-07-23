@@ -294,7 +294,7 @@ Run with: `cd contracts && cargo test --workspace` and `cd frontend && npm test`
 | Action | TX Hash | Explorer |
 |--------|---------|----------|
 | Factory Initialize | `85b2815a37d3dc30c7c99ce44388553dc8cf5d0a126d96b5a92ad047330a3d16` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/85b2815a37d3dc30c7c99ce44388553dc8cf5d0a126d96b5a92ad047330a3d16) |
-| Deploy NFT via Factory | *(cross-contract deploy_nft)* | [View Factory](https://stellar.expert/explorer/testnet/contract/CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN) |
+| Deploy NFT via Factory | `47818ee03f6fc7ce212429daa5152eab343a459cd0e5a496962b7a79c8dfee94` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/47818ee03f6fc7ce212429daa5152eab343a459cd0e5a496962b7a79c8dfee94) |
 | Friendbot Fund | `729b3a854ec22a17cd5c3c35625f60d6b38c88f95a0896575e67a53a0d5a9e50` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/729b3a854ec22a17cd5c3c35625f60d6b38c88f95a0896575e67a53a0d5a9e50) |
 
 *The `deploy_nft` invocation performs a cross-contract call (ForgeFactory → ForgeNFT). Visit the [Factory on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCH6FVGY2VE7RLMYI2N4EDHXJLHAG3ARE3ITXVNYZCWEWAU73GFZCMCN) to see all related transactions.*
@@ -437,7 +437,7 @@ Run with: `cd frontend && npm test`
 |---|-------------|--------|----------|
 | 1 | Public GitHub repository | ✅ | [github.com/olaleyeolajide81-sketch/StellarForge](https://github.com/olaleyeolajide81-sketch/StellarForge) |
 | 2 | README with complete documentation | ✅ | Architecture diagrams, API reference, quickstart, test coverage |
-| 3 | 10+ meaningful commits | ✅ | 28 commits with descriptive messages |
+| 3 | 10+ meaningful commits | ✅ | 30 commits with descriptive messages |
 | 4 | Live demo link | ✅ Done | [stellarforge-demo.vercel.app](https://stellarforge-demo.vercel.app) |
 | 5 | Contract deployment address | ✅ Done | ForgeFactory: `CCH6FVGY...CMCN`, ForgeNFT: `CBPDGVMX...LED24` — see [Deployed Contracts](#deployed-contract-addresses) |
 | 6 | Transaction hash for contract interaction | ✅ Done | `85b2815a...` (initialize), `729b3a85...` (fund) — see [Transaction Hash](#-transaction-hash-for-contract-interaction) |
